@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}{% if mode == "edit" %}Editar Produto{% else %}Novo Produto{% endif %} - Sispeed{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="page-header">
+        <h1>{% if mode == "edit" %}Editar produto{% else %}Novo produto{% endif %}</h1>
+        <p>Informe nome, unidade de medida, valores e se o produto está ativo.</p>
+    </div>
+
+    <div class="card-form">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label>Nome do produto</label>
+                    {{ form.name }}
+                    {% for error in form.name.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label>Unidade de medida</label>
+                    {{ form.unit }}
+                    {% for error in form.unit.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label>Valor de custo (opcional)</label>
+                    {{ form.cost_price }}
+                    {% for error in form.cost_price.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label>Valor de venda</label>
+                    {{ form.price }}
+                    {% for error in form.price.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-item">
+                        {{ form.is_active }} Produto ativo
+                    </label>
+                    {% for error in form.is_active.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label>Lucro estimado</label>
+                    <div class="field-help" id="profit-display">
+                        Informe valor de custo e valor de venda para calcular o lucro.
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary">
+                {% if mode == "edit" %}Salvar alterações{% else %}Cadastrar produto{% endif %}
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const costInput = document.getElementById("id_cost_price");
+        const priceInput = document.getElementById("id_price");
+        const profitDisplay = document.getElementById("profit-display");
+
+        if (!costInput || !priceInput || !profitDisplay) return;
+
+        function parseNumber(value) {
+            if (!value) return NaN;
+            // aceita vírgula ou ponto como separador decimal
+            const normalized = value.replace('.', '').replace(',', '.');
+            return parseFloat(normalized);
+        }
+
+        function formatMoney(num) {
+            if (isNaN(num)) return "";
+            return num.toFixed(2).replace('.', ',');
+        }
+
+        function formatPercent(num) {
+            if (isNaN(num)) return "";
+            return num.toFixed(2).replace('.', ',') + "%";
+        }
+
+        function updateProfit() {
+            const cost = parseNumber(costInput.value);
+            const price = parseNumber(priceInput.value);
+
+            if (isNaN(price) || price === 0 || isNaN(cost)) {
+                profitDisplay.textContent = "Informe valor de custo e valor de venda para calcular o lucro.";
+                return;
+            }
+
+            const profitValue = price - cost;
+            const profitPercent = (profitValue / price) * 100;
+
+            if (isNaN(profitValue)) {
+                profitDisplay.textContent = "Informe valor de custo e valor de venda para calcular o lucro.";
+                return;
+            }
+
+            profitDisplay.textContent = "Lucro: R$ " + formatMoney(profitValue) +
+                " (" + formatPercent(profitPercent) + ")";
+        }
+
+        costInput.addEventListener("input", updateProfit);
+        priceInput.addEventListener("input", updateProfit);
+
+        // calcula ao carregar a página (edição)
+        updateProfit();
+    });
+</script>
+{% endblock %}

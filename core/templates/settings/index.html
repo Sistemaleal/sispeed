@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block title %}Ajustes - Sispeed{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="page-header">
+        <h1>Ajustes</h1>
+        <p>Configure os dados da empresa, endereço, identidade visual, mensagem padrão do WhatsApp e o tema.</p>
+    </div>
+
+    <div class="card-form">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Dados da empresa -->
+            <div class="page-header" style="margin-bottom: 12px;">
+                <h2 style="font-size: 1.2rem;">Dados da empresa</h2>
+                <p style="font-size: 0.9rem; color: #9ca3af;">Informações básicas de identificação e contato.</p>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label>Nome da empresa</label>
+                    {{ company_form.name }}
+                    {% for error in company_form.name.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label>CNPJ</label>
+                    {{ company_form.cnpj }}
+                    {% for error in company_form.cnpj.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label>E-mail</label>
+                    {{ company_form.email }}
+                    {% for error in company_form.email.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label>Telefone</label>
+                    {{ company_form.phone }}
+                    {% for error in company_form.phone.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Endereço da empresa -->
+            <div class="page-header" style="margin: 20px 0 12px;">
+                <h2 style="font-size: 1.2rem;">Endereço da empresa</h2>
+                <p style="font-size: 0.9rem; color: #9ca3af;">Informe o endereço completo para uso em propostas e
+                    documentos.</p>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label>CEP</label>
+                    {{ company_form.cep }}
+                    {% for error in company_form.cep.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label>Endereço</label>
+                    {{ company_form.address }}
+                    {% for error in company_form.address.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label>Número</label>
+                    {{ company_form.number }}
+                    {% for error in company_form.number.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label>Bairro</label>
+                    {{ company_form.district }}
+                    {% for error in company_form.district.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label>Cidade</label>
+                    {{ company_form.city }}
+                    {% for error in company_form.city.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label>UF</label>
+                    {{ company_form.uf }}
+                    {% for error in company_form.uf.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Identidade visual -->
+            <div class="page-header" style="margin: 20px 0 12px;">
+                <h2 style="font-size: 1.2rem;">Identidade visual</h2>
+                <p style="font-size: 0.9rem; color: #9ca3af;">Logo que será usada no sistema e em relatórios.</p>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label>Logo da empresa</label>
+                    {% if company_form.instance.logo %}
+                    <div style="margin-bottom: 6px;">
+                        <img src="{{ company_form.instance.logo.url }}" alt="Logo atual" style="max-height: 60px;">
+                    </div>
+                    {% endif %}
+                    {{ company_form.logo }}
+                    {% for error in company_form.logo.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Mensagem padrão do WhatsApp -->
+            <div class="page-header" style="margin: 20px 0 12px;">
+                <h2 style="font-size: 1.2rem;">WhatsApp</h2>
+                <p style="font-size: 0.9rem; color: #9ca3af;">Defina uma mensagem padrão para ser usada ao iniciar
+                    conversas com clientes.</p>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label>Mensagem padrão do WhatsApp</label>
+                    {{ company_form.whatsapp_default_message }}
+                    <small class="field-help">
+                        Exemplo: "Olá {{'{{nome_cliente'}}}}, tudo bem? Sou da {{'{{nome_empresa'}}}} e estou entrando
+                        em contato sobre..."
+                    </small>
+                    {% for error in company_form.whatsapp_default_message.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Tema -->
+            <div class="page-header" style="margin: 20px 0 12px;">
+                <h2 style="font-size: 1.2rem;">Tema</h2>
+                <p style="font-size: 0.9rem; color: #9ca3af;">Escolha entre tema claro ou escuro.</p>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label>Tema</label>
+                    {{ pref_form.theme }}
+                    <small class="field-help">
+                        O tema será aplicado em todas as telas da sua conta.
+                    </small>
+                    {% for error in pref_form.theme.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary" style="margin-top: 16px;">
+                Salvar ajustes
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

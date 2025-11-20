@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Usuários - Sispeed{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="page-header-row">
+        <div>
+            <h1>Usuários</h1>
+            <p>Gerencie os usuários que têm acesso ao Sispeed na sua empresa.</p>
+        </div>
+        <a href="{% url 'users_create' %}" class="btn-primary btn-inline">
+            + Novo usuário
+        </a>
+    </div>
+
+    <div class="card-table">
+        {% if user_links %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Usuário</th>
+                        <th>E-mail</th>
+                        <th>Status</th>
+                        <th>Perfil</th>
+                        <th class="col-actions">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for link in user_links %}
+                        <tr>
+                            <td>{{ link.user.first_name|default:"-" }}</td>
+                            <td>{{ link.user.username }}</td>
+                            <td>{{ link.user.email|default:"-" }}</td>
+                            <td>
+                                {% if link.user.is_active %}
+                                    <span class="tag tag-success">Ativo</span>
+                                {% else %}
+                                    <span class="tag tag-muted">Inativo</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if link.user.is_staff %}
+                                    <span class="tag">Admin / Staff</span>
+                                {% else %}
+                                    <span class="tag">Usuário</span>
+                                {% endif %}
+                            </td>
+                            <td class="col-actions">
+                                <a href="{% url 'users_edit' link.pk %}" class="link-small">Editar</a>
+                                {% if request.user != link.user %}
+                                    <a href="{% url 'users_delete' link.pk %}" class="link-small link-danger">Excluir</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="empty-text">Nenhum usuário cadastrado ainda.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

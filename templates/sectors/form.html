@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{% if mode == "edit" %}Editar Setor{% else %}Novo Setor{% endif %} - Sispeed{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="page-header">
+        <h1>{% if mode == "edit" %}Editar setor{% else %}Novo setor{% endif %}</h1>
+        <p>Informe o nome do setor e se ele está ativo.</p>
+    </div>
+
+    <div class="card-form">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label>Nome do setor</label>
+                    {{ form.name }}
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-item">
+                        {{ form.is_active }} Setor ativo
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary">
+                {% if mode == "edit" %}Salvar alterações{% else %}Cadastrar setor{% endif %}
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

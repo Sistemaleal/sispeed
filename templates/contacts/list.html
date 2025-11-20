@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Contatos - Sispeed{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="page-header-row">
+        <div>
+            <h1>Contatos</h1>
+            <p>Cadastre e gerencie clientes, fornecedores, parceiros e mais.</p>
+        </div>
+        <a href="{% url 'contacts_create' %}" class="btn-primary btn-inline">
+            + Novo contato
+        </a>
+    </div>
+
+    <div class="card-table">
+        {% if contacts %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome / Fantasia</th>
+                    <th>Razão social</th>
+                    <th>CPF/CNPJ</th>
+                    <th>Telefone</th>
+                    <th>E-mail</th>
+                    <th>Status</th>
+                    <th>Tipo</th>
+                    <th class="col-actions">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in contacts %}
+                <tr>
+                    <td>{{ c.display_name }}</td>
+                    <td>{{ c.legal_name|default:"-" }}</td>
+                    <td>{{ c.document|default:"-" }}</td>
+                    <td>{{ c.phone|default:"-" }}</td>
+                    <td>{{ c.email|default:"-" }}</td>
+                    <td>
+                        {% if c.is_active %}
+                        <span class="tag tag-success">Ativo</span>
+                        {% else %}
+                        <span class="tag tag-muted">Inativo</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if c.is_client %}<span class="tag">Cliente</span>{% endif %}
+                        {% if c.is_supplier %}<span class="tag">Fornecedor</span>{% endif %}
+                        {% if c.is_partner %}<span class="tag">Parceiro</span>{% endif %}
+                        {% if c.is_employee %}<span class="tag">Funcionário</span>{% endif %}
+                        {% if c.is_other %}<span class="tag">Outros</span>{% endif %}
+                        {% if c.is_seller %}<span class="tag">Vendedor</span>{% endif %}
+                    </td>
+                    <td class="col-actions">
+                        <a href="{% url 'contacts_edit' c.pk %}" class="link-small">Editar</a>
+                        <a href="{% url 'contacts_delete' c.pk %}" class="link-small link-danger">Excluir</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty-text">Nenhum contato cadastrado ainda.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastro da Empresa - Sispeed{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="page-header">
+        <h1>Cadastro da empresa</h1>
+        <p>Crie a conta da sua empresa para começar a usar o Sispeed.</p>
+    </div>
+
+    <div class="card-form">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label>Nome da empresa</label>
+                    {{ form.company_name }}
+                </div>
+                <div class="form-group">
+                    <label>E-mail da empresa</label>
+                    {{ form.company_email }}
+                </div>
+                <div class="form-group">
+                    <label>Telefone</label>
+                    {{ form.company_phone }}
+                </div>
+                <div class="form-group">
+                    <label>CNPJ</label>
+                    {{ form.cnpj }}
+                </div>
+                <div class="form-group">
+                    <label>Seu nome</label>
+                    {{ form.admin_name }}
+                </div>
+                <div class="form-group">
+                    <label>Seu e-mail</label>
+                    {{ form.admin_email }}
+                </div>
+                <div class="form-group">
+                    <label>Usuário de acesso</label>
+                    {{ form.username }}
+                </div>
+
+                <div class="form-group password-group">
+                    <label>Senha</label>
+                    <div class="password-wrapper">
+                        {{ form.password }}
+                        <button type="button" class="toggle-password" data-target="id_password">
+                            Mostrar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group password-group">
+                    <label>Confirmar senha</label>
+                    <div class="password-wrapper">
+                        {{ form.password_confirm }}
+                        <button type="button" class="toggle-password" data-target="id_password_confirm">
+                            Mostrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary">Cadastrar</button>
+        </form>
+
+        <div class="auth-footer-inline" style="margin-top: 14px;">
+            <span>Já tenho cadastro.</span>
+            <a href="{% url 'login' %}">Fazer login</a>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const buttons = document.querySelectorAll(".toggle-password");
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const targetId = btn.getAttribute("data-target");
+            const input = document.getElementById(targetId);
+            if (!input) return;
+            if (input.type === "password") {
+                input.type = "text";
+                btn.textContent = "Ocultar";
+            } else {
+                input.type = "password";
+                btn.textContent = "Mostrar";
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}{% if mode == "edit" %}Editar Usuário{% else %}Novo Usuário{% endif %} - Sispeed{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="page-header">
+        <h1>{% if mode == "edit" %}Editar usuário{% else %}Novo usuário{% endif %}</h1>
+        <p>Defina os dados de acesso e permissões do usuário.</p>
+    </div>
+
+    <div class="card-form">
+        {% if form.non_field_errors %}
+        <div class="form-errors">
+            {% for error in form.non_field_errors %}
+            <div class="message error">{{ error }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label>Nome completo</label>
+                    {{ form.full_name }}
+                    {% for error in form.full_name.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label>E-mail</label>
+                    {{ form.email }}
+                    {% for error in form.email.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                {% if mode == "create" %}
+                <div class="form-group">
+                    <label>Usuário</label>
+                    {{ form.username }}
+                    {% for error in form.username.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label class="checkbox-item">
+                        {{ form.is_active }} Usuário ativo
+                    </label>
+                    {% for error in form.is_active.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-item">
+                        {{ form.is_staff }} Acesso de administrador (staff)
+                    </label>
+                    {% for error in form.is_staff.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label>Permissões</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            {{ form.can_manage_contacts }} Pode gerenciar contatos
+                        </label>
+                        <label class="checkbox-item">
+                            {{ form.can_manage_users }} Pode gerenciar usuários
+                        </label>
+                        <label class="checkbox-item">
+                            {{ form.can_manage_products }} Pode gerenciar produtos
+                        </label>
+                        <label class="checkbox-item">
+                            {{ form.can_manage_sectors }} Pode gerenciar setores
+                        </label>
+                    </div>
+                    {% for error in form.can_manage_contacts.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                    {% for error in form.can_manage_users.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                    {% for error in form.can_manage_products.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                    {% for error in form.can_manage_sectors.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group password-group">
+                    <label>{% if mode == "edit" %}Nova senha (opcional){% else %}Senha{% endif %}</label>
+                    <div class="password-wrapper">
+                        {{ form.password }}
+                        <button type="button" class="toggle-password" data-target="{{ form.password.id_for_label }}">
+                            Mostrar
+                        </button>
+                    </div>
+                    {% for error in form.password.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group password-group">
+                    <label>Confirmar senha</label>
+                    <div class="password-wrapper">
+                        {{ form.password_confirm }}
+                        <button type="button" class="toggle-password"
+                            data-target="{{ form.password_confirm.id_for_label }}">
+                            Mostrar
+                        </button>
+                    </div>
+                    {% for error in form.password_confirm.errors %}
+                    <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary">
+                {% if mode == "edit" %}Salvar alterações{% else %}Cadastrar usuário{% endif %}
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const buttons = document.querySelectorAll(".toggle-password");
+        buttons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                const targetId = btn.getAttribute("data-target");
+                const input = document.getElementById(targetId);
+                if (!input) return;
+                if (input.type === "password") {
+                    input.type = "text";
+                    btn.textContent = "Ocultar";
+                } else {
+                    input.type = "password";
+                    btn.textContent = "Mostrar";
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

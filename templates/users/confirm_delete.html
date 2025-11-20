@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Excluir Usuário - Sispeed{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="card-form">
+        <h2 style="margin-bottom: 8px;">Excluir usuário</h2>
+        <p style="margin-bottom: 16px;">
+            Tem certeza que deseja excluir o usuário
+            <strong>{{ user_link.user.first_name|default:user_link.user.username }}</strong>?
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div style="display:flex; gap:8px;">
+                <button type="submit" class="btn-primary" style="max-width: 200px;">Sim, excluir</button>
+                <a href="{% url 'users_list' %}" class="btn-cancel">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

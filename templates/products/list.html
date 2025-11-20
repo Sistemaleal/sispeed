@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Produtos - Sispeed{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="page-header-row">
+        <div>
+            <h1>Produtos</h1>
+            <p>Cadastre os produtos e serviços que serão usados nas propostas.</p>
+        </div>
+        <a href="{% url 'products_create' %}" class="btn-primary btn-inline">
+            + Novo produto
+        </a>
+    </div>
+
+    <div class="card-table">
+        {% if products %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Unidade</th>
+                    <th>Valor de custo</th>
+                    <th>Valor de venda</th>
+                    <th>Lucro (R$)</th>
+                    <th>Lucro (%)</th>
+                    <th>Status</th>
+                    <th class="col-actions">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in products %}
+                <tr>
+                    <td>{{ p.name }}</td>
+                    <td>
+                        {% if p.unit == "M2" %}m²{% else %}Unidade{% endif %}
+                    </td>
+                    <td>
+                        {% if p.cost_price %}
+                        R$ {{ p.cost_price|floatformat:2 }}
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                    <td>R$ {{ p.price|floatformat:2 }}</td>
+                    <td>
+                        {% if p.profit_value %}
+                        R$ {{ p.profit_value|floatformat:2 }}
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if p.profit_percent %}
+                        {{ p.profit_percent|floatformat:2 }}%
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if p.is_active %}
+                        <span class="tag tag-success">Ativo</span>
+                        {% else %}
+                        <span class="tag tag-muted">Inativo</span>
+                        {% endif %}
+                    </td>
+                    <td class="col-actions">
+                        <a href="{% url 'products_edit' p.pk %}" class="link-small">Editar</a>
+                        <a href="{% url 'products_delete' p.pk %}" class="link-small link-danger">Excluir</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty-text">Nenhum produto cadastrado ainda.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
