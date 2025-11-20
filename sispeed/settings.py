@@ -79,12 +79,12 @@ TIME_ZONE = "America/Sao_Paulo"
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = "/static/"  # note a barra inicial e final
+STATIC_URL = "/static/"  # importante ter a barra inicial e final
 
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR / "static",  # onde está static/css/style.css no seu projeto
 ]
 
-STATIC_ROOT = BASE_DIR / "staticfiles"  # pasta que será criada no deploy
+STATIC_ROOT = BASE_DIR / "staticfiles"  # pasta usada em produção (collectstatic)
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
