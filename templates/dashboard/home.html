@@ -1,8 +1,22 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Dashboard - Sispeed{% endblock %}
 
 {% block content %}
-<h1>Bem-vindo ao Sispeed</h1>
-<p>Este é o painel inicial. Em breve teremos os módulos: Cadastros, Propostas, Produção, Financeiro, etc.</p>
+<div class="page-wrapper">
+    <div class="page-header-row">
+        <div>
+            <h1>Início</h1>
+            <p>Bem-vindo ao painel de gestão Sispeed.</p>
+        </div>
+        <a href="{% url 'contacts_list' %}" class="btn-primary btn-inline">
+            Ver contatos
+        </a>
+    </div>
+
+    <div class="card-form">
+        <p>Aqui você pode colocar um resumo: contatos, usuários, produtos, etc.</p>
+    </div>
+</div>
 {% endblock %}

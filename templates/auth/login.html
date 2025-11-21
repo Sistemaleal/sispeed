@@ -1,49 +1,51 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Login - Sispeed{% endblock %}
+{% block title %}Entrar - Sispeed{% endblock %}
 
-{% block body %}
+{% block content %}
 <div class="login-page">
     <div class="login-left">
         <div class="login-brand">
-            <img src="{% static 'img/icon.ico' %}" alt="Sispeed" class="brand-icon">
+            <img src="{% static 'img/icon.ico' %}" class="brand-icon" alt="Sispeed">
             <span class="brand-name">Sispeed</span>
         </div>
         <h1 class="login-title">
-            Acelere sua <span>gestão</span>.
+            Acesse seu <span>painel de gestão</span>
         </h1>
         <p class="login-subtitle">
-            Centralize propostas, produção e financeiro em um único painel moderno.
+            Organize contatos, usuários, produtos e setores em um só lugar.
         </p>
-        <div class="login-highlight">
-            <div class="dot"></div>
-            <span>Multi-empresas • Multi-usuários • Em tempo real</span>
-        </div>
     </div>
 
     <div class="login-right">
         <div class="auth-card glass">
             <div class="auth-logo">
-                <img src="{% static 'img/icon.ico' %}" alt="Sispeed Icon" class="main-logo">
-                <h2>Bem-vindo de volta</h2>
-                <p>Entre com suas credenciais para acessar o painel.</p>
+                <img src="{% static 'img/icon.ico' %}" class="main-logo" alt="Sispeed">
+                <h2>Entrar</h2>
+                <p>Use suas credenciais para acessar o sistema.</p>
             </div>
-            <form method="post" autocomplete="off">
+
+            <form method="post" novalidate>
                 {% csrf_token %}
+                {% for field in form %}
                 <div class="form-group">
-                    <label for="id_username">Usuário</label>
-                    {{ form.username }}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <div class="field-error">
+                        {{ field.errors|striptags }}
+                    </div>
+                    {% endif %}
                 </div>
-                <div class="form-group">
-                    <label for="id_password">Senha</label>
-                    {{ form.password }}
-                </div>
-                <button type="submit" class="btn-primary login-btn">Entrar</button>
+                {% endfor %}
+
+                <button type="submit" class="btn-primary">Entrar</button>
             </form>
+
             <div class="auth-footer-inline">
                 <span>Primeiro acesso?</span>
-                <a href="{% url 'company_signup' %}">Cadastre sua empresa</a>
+                <a href="{% url 'company_signup' %}">Cadastrar empresa</a>
             </div>
         </div>
     </div>

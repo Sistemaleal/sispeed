@@ -4,13 +4,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = "django-insecure-2$0)ykbqwffcsqr97l0sq1v%25xc19)u=e%t_=ylqpis@p6xio"
 
-DEBUG = False
+# PARA DESENVOLVIMENTO LOCAL
 
+#DEBUG = True
+#ALLOWED_HOSTS = []
+
+DEBUG = False
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "sispeed-production.up.railway.app",
 ]
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
